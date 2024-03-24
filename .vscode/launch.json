@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Library API",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "module": "flask",
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "FLASK_APP": "run.py",
+                "FLASK_ENV":"development",
+                "FLASK_DEBUG": "1"
+            },
+
+            "args": [
+                "run",
+                "--port=5000",
+                
+            ],
+            "justMyCode": false,
+        }, 
+        {
+            "name": "Test",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "program": "${workspaceFolder}/test.py",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+          }        
+    ]
+}

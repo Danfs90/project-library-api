@@ -1,0 +1,3 @@
+{
+  "python.defaultInterpreterPath": "${env:HOME}/.virtualenvs/project-library-api/bin/python"
+}
