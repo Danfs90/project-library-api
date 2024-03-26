@@ -9,5 +9,5 @@ def login():
 
     login_response = auth_system.login('user', 'password') 
     #TODO necessario finalizar rota
-    print("OK")
+    print("OK2")
     return "200"
