@@ -6,7 +6,7 @@ from project_library_api.config import SECRET_KEY_JWT
 class Authentication:
     def __init__(self):
         self.secret_key = SECRET_KEY_JWT
-
+        
     def generate_token(self, username):
         payload = {
             'username': username,

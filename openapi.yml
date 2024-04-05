@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: Library API
+  version: 1.0.0
+  description: Essa é a documentação da API de livraria do projeto de POO - UNIDOMBOSCO ADS 2024
+
+servers:
+  - url: http://localhost:5000
+    description: Dev
+
+paths:
+  /v1/auth/login:
+    post:
+      summary: Realiza o login do usuario na plataforma
+      tags:
+        - "Auth"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password 
+      responses:
+        '200':
+          description: Usuário logado com sucesso
+        '401':
+          description: Falha na autenticação
+
+  /v1/user/register:
+    post:
+      summary: Cria o registro do usuario na base
+      tags:
+        - "Register"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: example@example.com.br 
+                password:
+                  type: string
+                  example: password 
+                birth_date:
+                  type: string
+                  example: 2021-01-01
+                address:
+                  type: string
+                  example: Rua dos mercadores
+                number:
+                  type: string
+                  example: 100                   
+                zip_code:
+                  type: string
+                  example: 00000-000 
+                role:
+                  type: string
+                  example: user                                     
+      responses:
+        '200':
+          description: Usuário criado com sucesso
+        '401':
+          description: Falha na criação
