@@ -3,7 +3,7 @@ import hashlib
 from project_library_api.models import Users
 from datetime import datetime
 class User:
-    def __init__(self, username, password, db, birth_date = None, address = None, zip_code = None, role = None, number = None):
+    def __init__(self, username, password, db = None, birth_date = None, address = None, zip_code = None, role = None, number = None):
         self.db = db
         self.username = username
         self.password = password
@@ -14,7 +14,8 @@ class User:
         self.number = number
 
     def create_registration(self):
-
+        #TODO Adicionar algumas validações
+        
         new_user = Users()
 
         new_user.username = self.username
