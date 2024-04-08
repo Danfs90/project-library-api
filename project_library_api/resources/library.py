@@ -1,0 +1,16 @@
+class Library():
+
+    def add_book():
+        ...
+
+    def delete_book():
+        ...
+
+    def borrow_book():
+        ...
+    
+    def reserve_book():
+        ...
+    
+    def return_book():
+        ...
