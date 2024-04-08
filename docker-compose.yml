@@ -1,0 +1,30 @@
+# Subindo um servidor MySQL com o Docker e Docker-Compose
+
+# Passo a passo de como iniciar um um banco no docker:
+# Fazer o download do Docker Desktop: https://docs.docker.com/desktop/install/windows-install/
+# Crie e inicie o container Docker do MySQL: em seu Promp de Comando, localize o diretório do arquivo 
+# docker-compose.yml e execute o comando 'docker-compose up'
+# Fazer o download do DBeaver para visialização gráfica do banco de dados: https://dbeaver.io/download/
+
+version: '4.27.2'
+services:
+  mysql_206:
+    container_name: mysql_project_libray
+    hostname: mysql_project_libray
+    image: mysql:8
+    restart: always
+    command:
+      - --authentication-policy=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb_force_recovery=0
+    volumes:
+      - ./mysql_project_libray:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: bd_project_libray
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: senha
+      TZ: America/Sao_Paulo
