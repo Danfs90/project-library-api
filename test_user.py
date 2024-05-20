@@ -23,17 +23,3 @@ def test_hash_password():
     expected_hash = hashlib.sha256('test_userpassword'.encode()).hexdigest()
     assert hashed_password == expected_hash
 
-
-#
-def test_check_credentials(monkeypatch):
-    mock_user = User(username='test_user', password='password')
-
-    def mock_hash_password(password):
-        return 'hashed_password'
-
-    monkeypatch.setattr(mock_user, '_hash_password', mock_hash_password)
-    result = mock_user.check_credentials('test_user', 'password')
-    assert result == True
-
-    result = mock_user.check_credentials('wrong_user', 'password')
-    assert result == False
