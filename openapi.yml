@@ -21,7 +21,7 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
                 password:
                   type: string
@@ -44,9 +44,18 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
                   example: example@example.com.br 
+                first_name:
+                  type: string
+                  example: Lorem
+                last_name:
+                  type: string
+                  example: Ipsum
+                cellphone:
+                  type: string
+                  example: 4199999999                  
                 password:
                   type: string
                   example: password 
