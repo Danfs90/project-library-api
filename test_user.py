@@ -44,3 +44,4 @@ def test_api_response(app):
         assert json_data['status_code'] == 200
         assert json_data['message'] == "Success"
         assert json_data['data'] == {"key": "value"}
+
