@@ -25,7 +25,7 @@ class User:
         new_user.cellphone = self.cellphone
         new_user.email = self.email
         new_user.hash = hash_password(self.email, self.password)
-        new_user.birth_date = datetime.strptime(self.birth_date, '%Y-%m-%dT%H:%M:%S.%fZ')
+        new_user.birth_date = datetime.strptime(self.birth_date, '%Y-%m-%d')
         new_user.address = self.address
         new_user.zip_code = self.zip_code
         new_user.role = self.role

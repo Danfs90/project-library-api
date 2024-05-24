@@ -1,8 +1,10 @@
+import logging
+
 from flask import request
 from flask.blueprints import Blueprint
-import logging
-from project_library_api.resources.auth import Authentication
 from project_library_api import db
+from project_library_api.factory import new_login
+from project_library_api.util import api_response
 
 LOGGER = logging.getLogger(__name__)
 
@@ -17,13 +19,13 @@ def login():
 
         data = request.json
         
-        username = data.get('email')
+        email = data.get('email')
         password = data.get('password')
         
-        auth_system = Authentication()
-        login_response = auth_system.login(username, password, db.session) 
+        auth_system = new_login(email, password, db.session)
+        login_response = auth_system.login() 
 
-        return login_response, 200
+        return api_response(data=login_response['status'], message=login_response['message'], status_code=200)
     except Exception as e:
         LOGGER.info("Erro na autenticação do usuario: ".format(e))
         return "Erro no servidor", 500

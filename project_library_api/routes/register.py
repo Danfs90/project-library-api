@@ -34,6 +34,6 @@ def login():
         
         login_response = new_user.create_registration()
 
-        return api_response(200, message="Usuario criado com sucesso!")
+        return api_response(data=login_response, status_code=200, message="Usuario criado com sucesso!")
     except Exception as ex:
         return api_response(500, message="Erro interno no servidor")

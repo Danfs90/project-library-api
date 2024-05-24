@@ -2,20 +2,14 @@ import jwt
 import datetime
 from project_library_api.util import hash_password
 from project_library_api.config import SECRET_KEY_JWT
+from project_library_api.models import Users
 
 class Authentication():
-    def __init__(self, email, password):
+    def __init__(self, email, password, db):
+        self.db = db
         self.secret_key = SECRET_KEY_JWT
         self.email = email
         self.password = password
-        
-    def generate_token(self):
-        payload = {
-            'email': self.email,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  
-        }
-        token = jwt.encode(payload, self.secret_key, algorithm='HS256')
-        return token
 
     def verify_token(self, token):
         try:
@@ -28,11 +22,12 @@ class Authentication():
 
     def login(self):
 
-        if self.check_credentials():
-            token = self.generate_token(self.email)
-            return {'message': 'Login bem-sucedido', 'token': token}
+        validate_login = self.check_credentials()
+
+        if validate_login:
+            return {'message': 'Login bem-sucedido', 'status': True}
         else:
-            return {'message': 'Credenciais inválidas'}
+            return {'message': 'Credenciais inválidas', 'status': False}
 
     def protected_route(self, token):
         username = self.verify_token(token)
@@ -45,9 +40,7 @@ class Authentication():
 
         hashed_password = hash_password(self.email, self.password)
         if hashed_password:
-            email = ''
-            password = ''
-            #TODO criar validação de banco aqui
+            db_hashed_password = self.db.query(Users.hash).filter(Users.hash == hashed_password).first()
         
-        return self.email == email and self.password == password
+        return hashed_password == db_hashed_password[0]
 
