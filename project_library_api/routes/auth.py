@@ -23,9 +23,9 @@ def login():
         password = data.get('password')
         
         auth_system = new_login(email, password, db.session)
-        login_response = auth_system.login() 
+        login_response, status= auth_system.login() 
 
-        return api_response(data=login_response['status'], message=login_response['message'], status_code=200)
+        return api_response(data=login_response['status'], message=login_response['message'], status_code=status)
     except Exception as e:
         LOGGER.info("Erro na autenticação do usuario: ".format(e))
         return "Erro no servidor", 500

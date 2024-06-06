@@ -25,9 +25,9 @@ class Authentication():
         validate_login = self.check_credentials()
 
         if validate_login:
-            return {'message': 'Login bem-sucedido', 'status': True}
+            return {'message': 'Login bem-sucedido', 'status': True}, 200
         else:
-            return {'message': 'Credenciais inválidas', 'status': False}
+            return {'message': 'Credenciais inválidas', 'status': False}, 403
 
     def protected_route(self, token):
         username = self.verify_token(token)
@@ -41,6 +41,8 @@ class Authentication():
         hashed_password = hash_password(self.email, self.password)
         if hashed_password:
             db_hashed_password = self.db.query(Users.hash).filter(Users.hash == hashed_password).first()
-        
-        return hashed_password == db_hashed_password[0]
+
+            if db_hashed_password:
+                db_hashed_password = db_hashed_password[0]
+        return hashed_password == db_hashed_password
 
