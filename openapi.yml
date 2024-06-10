@@ -77,3 +77,141 @@ paths:
           description: Usuário criado com sucesso
         '401':
           description: Falha na criação
+
+  /v1/books/query:
+    get:
+      summary: Lista todos os livros
+      tags:
+        - "Books"      
+      description: Retorna uma lista de todos os livros disponíveis.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+  /v1/books/{book_id}:
+    get:
+      summary: Retorna um livro específico
+      description: Retorna os detalhes de um livro específico com base no ID fornecido.
+      tags:
+        - "Books"  
+      parameters:
+        - name: book_id
+          in: path
+          description: ID do livro a ser recuperado
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+  /v1/books/{book_id}/delete:
+    delete:
+      summary: Exclui um livro
+      description: Exclui um livro específico com base no ID fornecido.
+      tags:
+        - "Books"  
+      parameters:
+        - name: book_id
+          in: path
+          description: ID do livro a ser recuperado
+          required: true
+      responses:
+        200:
+          description: Livro excluído com sucesso!
+        404:
+          description: Livro não encontrado
+
+  /v1/books/add:
+    post:
+      summary: Adiciona um novo livro
+      tags:
+        - "Books"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Livro adicionado com sucesso
+        '400':
+          description: Requisição inválida       
+
+  /v1/books/{book_id}/update:
+    put:
+      summary: Atualiza um livro
+      description: Atualiza um livro específico com base no ID fornecido.
+      tags:
+        - "Books"  
+      parameters:
+        - name: book_id
+          in: path
+          description: ID do livro a ser atualizado
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        200:
+          description: Livro atualizado com sucesso
+        404:
+          description: Livro não encontrado
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título do livro
+        author:
+          type: string
+          description: Autor do livro
+        publication_date:
+          type: string
+          format: date
+          description: Data de publicação do livro
+        isbn:
+          type: string
+          description: ISBN do livro
+        publisher:
+          type: string
+          description: Editora do livro
+        genre:
+          type: string
+          description: Gênero do livro
+        page_count:
+          type: integer
+          description: Número de páginas do livro
+        language:
+          type: string
+          description: Idioma do livro
+        summary:
+          type: string
+          description: Resumo do livro
+        cover_image:
+          type: string
+          description: URL da imagem de capa do livro
+        stock:
+          type: integer
+          description: Quantidade de exemplares disponíveis em estoque
+        price:
+          type: number
+          format: float
+          description: Preço do livro

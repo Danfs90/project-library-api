@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from project_library_api import config
-from project_library_api.routes import auth, register
+from project_library_api.routes import auth, register, books
 from project_library_api import db
 
 app = Flask(__name__)
@@ -16,3 +16,4 @@ CORS(app)
 #Rotas
 app.register_blueprint(auth.actions)
 app.register_blueprint(register.actions)
+app.register_blueprint(books.actions)
