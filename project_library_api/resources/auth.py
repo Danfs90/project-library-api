@@ -5,11 +5,11 @@ from project_library_api.config import SECRET_KEY_JWT
 from project_library_api.models import Users
 
 class Authentication():
-    def __init__(self, email, password, db):
+    def __init__(self, hash, db):
         self.db = db
         self.secret_key = SECRET_KEY_JWT
-        self.email = email
-        self.password = password
+        self.hash = hash
+   
 
     def verify_token(self, token):
         try:
@@ -25,9 +25,15 @@ class Authentication():
         validate_login = self.check_credentials()
 
         if validate_login:
-            return {'message': 'Login bem-sucedido', 'status': True}, 200
+
+            return {'message': 'Login bem-sucedido',
+                     'data': {
+                      'user_id':validate_login[1],
+                      'role':validate_login[2].value  
+                     }}, 200
+        
         else:
-            return {'message': 'Credenciais inválidas', 'status': False}, 403
+            return {'message': 'Credenciais inválidas', 'data': False}, 403
 
     def protected_route(self, token):
         username = self.verify_token(token)
@@ -37,12 +43,13 @@ class Authentication():
             return 'Token inválido ou expirado. Faça login novamente.'
 
     def check_credentials(self):
+        """Funcao para validacao de login"""
 
-        hashed_password = hash_password(self.email, self.password)
-        if hashed_password:
-            db_hashed_password = self.db.query(Users.hash).filter(Users.hash == hashed_password).first()
+        db_hashed_password = self.db.query(Users.hash, Users.id, Users.role).filter(Users.hash == self.hash).first()
 
-            if db_hashed_password:
-                db_hashed_password = db_hashed_password[0]
-        return hashed_password == db_hashed_password
+        if db_hashed_password:
+
+            return db_hashed_password
+
+        return False
 

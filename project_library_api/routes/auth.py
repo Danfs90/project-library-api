@@ -19,13 +19,12 @@ def login():
 
         data = request.json
         
-        email = data.get('email')
-        password = data.get('password')
+        hash = data.get('hash')
         
-        auth_system = new_login(email, password, db.session)
+        auth_system = new_login(hash, db.session)
         login_response, status= auth_system.login() 
 
-        return api_response(data=login_response['status'], message=login_response['message'], status_code=status)
+        return api_response(data=login_response['data'], message=login_response['message'], status_code=status)
     except Exception as e:
         LOGGER.info("Erro na autenticação do usuario: ".format(e))
         return "Erro no servidor", 500

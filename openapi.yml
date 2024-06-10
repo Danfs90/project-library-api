@@ -21,11 +21,9 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                hash:
                   type: string
-                password:
-                  type: string
-                  format: password 
+                  example: a035552ecc2f6d88e797faa3497a3cb3d4148299ca5f56bd5a3d8ee29d765f4b
       responses:
         '200':
           description: Usuário logado com sucesso

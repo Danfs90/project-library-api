@@ -31,7 +31,7 @@ def upgrade() -> None:
         sa.Column('address', sa.String(100), nullable=True),
         sa.Column('zip_code', sa.String(50), nullable=True),
         sa.Column('number', sa.String(10), nullable=True),
-        sa.Column('role', sa.Enum('admin', 'user', 'employee'), nullable=False),
+        sa.Column('role', sa.Enum('ADMIN', 'USER', 'EMPLOYEE'), nullable=False),
     )    
 
 
