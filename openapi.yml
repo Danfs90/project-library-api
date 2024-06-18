@@ -78,6 +78,25 @@ paths:
         '401':
           description: Falha na criação
 
+  /v1/my_books/{id_user}:
+    get:
+      summary: Retorna um livro específico
+      description: Retorna os detalhes de um livro específico com base no ID fornecido.
+      tags:
+        - "Books"  
+      parameters:
+        - name: id_user
+          in: path
+          description: ID do livro a ser recuperado
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
   /v1/books/query:
     get:
       summary: Lista todos os livros
