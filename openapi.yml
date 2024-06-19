@@ -78,6 +78,58 @@ paths:
         '401':
           description: Falha na criação
 
+  /v1/user/update:
+    put:
+      summary: Cria o registro do usuario na base
+      tags:
+        - "Register"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_user:
+                  type: integer
+                  example: 1 
+                email:
+                  type: string
+                  example: example@example.com.br 
+                first_name:
+                  type: string
+                  example: Lorem
+                last_name:
+                  type: string
+                  example: Ipsum
+                cellphone:
+                  type: string
+                  example: 4199999999                  
+                password:
+                  type: string
+                  example: password 
+                birth_date:
+                  type: string
+                  example: 2021-01-01
+                address:
+                  type: string
+                  example: Rua dos mercadores
+                number:
+                  type: string
+                  example: 100                   
+                zip_code:
+                  type: string
+                  example: 00000-000 
+                role:
+                  type: string
+                  example: user                                     
+      responses:
+        '200':
+          description: Usuário criado com sucesso
+        '401':
+          description: Falha na criação
+
+
   /v1/my_books/{id_user}:
     get:
       summary: Retorna um livro específico
