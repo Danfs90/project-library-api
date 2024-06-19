@@ -96,6 +96,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
+  /v1/my_books/payment:
+    post:
+      summary: Adiciona um novo livro
+      tags:
+        - "Books"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        '201':
+          description: Livro adicionado com sucesso
+        '400':
+          description: Requisição inválida       
 
   /v1/books/query:
     get:
@@ -234,3 +250,13 @@ components:
           type: number
           format: float
           description: Preço do livro
+
+    Payment:
+      type: object
+      properties:
+        id_user:
+          type: integer
+          description: Id do usuario
+        id_book:
+          type: integer
+          description: Id do Livro

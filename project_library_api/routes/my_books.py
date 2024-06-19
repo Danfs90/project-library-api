@@ -13,7 +13,7 @@ actions = Blueprint('my_books', 'my_books', url_prefix='/v1/my_books')
 
 @actions.route('/<id_user>', methods=['GET'])
 def my_books(id_user):
-    """Rota responsavel pelo login do usuario"""
+    """Rota responsavel pela relação livro/usuario"""
     try:
         
         if (not id_user):
@@ -41,3 +41,24 @@ def my_books(id_user):
         return api_response(data=data_books, status_code=200, message="Livros localizados!")
     except Exception as ex:
         return api_response(500, message="Erro interno no servidor")
+    
+@actions.route('/payment', methods=['POST'])
+def my_books_add():
+    try:
+        
+        LOGGER.info("Adicionando o novo livro")
+
+        data = request.json
+
+        new_payment = UsersBooks(**data)
+
+        db.session.add(new_payment)
+
+        db.session.commit()
+        
+        return api_response(data=[{'book_id':new_payment.id_book}], message='Livro adicionado com sucesso!', status_code=200 )
+    
+    except Exception as e:
+        LOGGER.info("Erro ao criar o pagamento do novo livro: ".format(e))
+        return api_response(data=False, message='Erro ao criar o pagamento do novo livro!', status_code=500 )
+                
