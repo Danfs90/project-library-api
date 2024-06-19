@@ -50,7 +50,12 @@ def my_books_add():
 
         data = request.json
 
-        new_payment = UsersBooks(**data)
+        data_book = {
+            "id_user": data['id_user'],
+            "id_book": data['id_book']
+        }
+
+        new_payment = UsersBooks(**data_book)
 
         db.session.add(new_payment)
 
