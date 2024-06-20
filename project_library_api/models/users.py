@@ -20,3 +20,18 @@ class Users(db.Model):
     zip_code = db.Column(db.String(10), nullable=False)
     role = db.Column(db.Enum(Role), nullable=False, default=Role.USER)
     number = db.Column(db.String(10), nullable=False)
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'hash': self.hash,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'cellphone': self.cellphone,
+            'email': self.email,
+            'birth_date': self.birth_date.strftime('%Y-%m-%d'),
+            'address': self.address,
+            'zip_code': self.zip_code,
+            'role': self.role.value,
+            'number': self.number
+        }

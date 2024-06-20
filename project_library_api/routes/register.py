@@ -72,3 +72,15 @@ def login_add():
         return api_response(data='Usuario ajustado com sucesso!', status_code=200, message="Usuario criado com sucesso!")
     except Exception as ex:
         return api_response(500, message="Erro interno no servidor")    
+    
+
+@actions.route('/<id_user>', methods=['GET'])
+def login_view(id_user):
+    """Rota responsavel por retornar os dados de usuarios """
+    try:
+        
+        user = db.session.query(Users).filter(Users.id == id_user).first()
+
+        return api_response(data=[user.serialize()], status_code=200, message="Informações de usuarios retornadas com sucesso!")
+    except Exception as ex:
+        return api_response(500, message="Erro interno no servidor")    

@@ -129,6 +129,21 @@ paths:
         '401':
           description: Falha na criação
 
+  /v1/user/{id_user}:
+    get:
+      summary: Retorna um livro específico
+      description: Retorna os detalhes de um livro específico com base no ID fornecido.
+      tags:
+        - "Register"  
+      parameters:
+        - name: id_user
+          in: path
+          description: ID do livro a ser recuperado
+          required: true
+      responses:
+        200:
+          description: OK
+
 
   /v1/my_books/{id_user}:
     get:
