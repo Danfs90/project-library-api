@@ -56,6 +56,7 @@ def login_add():
         zip_code = data.get('zip_code')
         role = data.get('role')    
 
+
         user = db.session.query(Users).filter(Users.id == id_user).first()
         
         user.first_name = first_name if first_name else user.first_name

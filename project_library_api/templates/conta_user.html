@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conta.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+</head>
+<body>
+    <nav class="menu-lateral">
+        <div class="btn-expandir">
+            <i class="bi bi-list" id="btn-exp"></i>
+        </div><!--btn-expandir-->
+        <ul>
+            <li class="item-menu">
+                <a href="{{ url_for('inicial_user') }}">
+                    <span class="icon"><i class="bi bi-house-door"></i></span>
+                    <span class="txt-link">Início</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('carrinho') }}">
+                    <span class="icon"><i class="bi bi-bag"></i></span>
+                    <span class="txt-link">carrinho</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('meus_livros') }}">
+                    <span class="icon"><i class="bi bi-book"></i></span>
+                    <span class="txt-link">Meus livros</span>
+                </a>
+            </li>
+            <li class="item-menu ativo">
+                <a href="{{ url_for('conta_user') }}">
+                    <span class="icon"><i class="bi bi-person-circle"></i></span>
+                    <span class="txt-link">Conta</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('login') }}" id="logout-link" onclick="logout(event)">
+                    <span class="icon"><i class="bi bi-box-arrow-left"></i></span>
+                    <span class="txt-link">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="dados-usuario-wrapper">
+        <h2>Dados do Usuário</h2>
+        <form id="dadosUsuarioForm">
+            <div class="form-group">
+                <label for="first_name">Primeiro Nome</label>
+                <input type="text" id="first_name" name="first_name" readonly>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Sobrenome</label>
+                <input type="text" id="last_name" name="last_name" readonly>
+            </div>
+            <div class="form-group">
+                <label for="cellphone">Celular</label>
+                <input type="tel" id="cellphone" name="cellphone" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" readonly>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" readonly>
+            </div>
+            <div class="form-group">
+                <label for="birth_date">Data de Nascimento</label>
+                <input type="date" id="birth_date" name="birth_date" readonly>
+            </div>
+            <div class="form-group">
+                <label for="zip_code">CEP</label>
+                <input type="text" id="zip_code" name="zip_code" readonly>
+            </div>
+            <div class="form-group">
+                <label for="address">Endereço</label>
+                <textarea id="address" name="address" rows="2" readonly></textarea>
+            </div>
+            <div class="form-group">
+                <label for="number">Numero</label>
+                <textarea id="number" name="number" rows="2" readonly></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" id="editButton" onclick="enableEditing()">Editar</button>
+                <button type="submit" id="saveButton">Salvar</button>
+            </div>
+        </form>
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const userId = getCookie('user_id');
+    console.log(userId)
+    if (userId) {
+        const getUserUrl = `/v1/user/${userId}`;
+
+        fetch(getUserUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const user = data.data[0];
+            document.getElementById('first_name').value = user.first_name;
+            document.getElementById('last_name').value = user.last_name;
+            document.getElementById('cellphone').value = user.cellphone;
+            document.getElementById('email').value = user.email;
+            document.getElementById('birth_date').value = user.birth_date;
+            document.getElementById('zip_code').value = user.zip_code;
+            document.getElementById('address').value = user.address;
+            document.getElementById('number').value = user.number;
+        })
+        .catch(error => console.error('Error:', error));
+
+    } else {
+        console.error('User ID not found in cookies');
+    }
+});
+
+function enableEditing() {
+    document.querySelectorAll('#dadosUsuarioForm input, #dadosUsuarioForm textarea').forEach(input => {
+        input.removeAttribute('readonly');
+    });
+}
+
+document.getElementById('dadosUsuarioForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const userId = getCookie('user_id');
+    if (!userId) {
+        console.error('User ID not found in cookies');
+        return;
+    }
+
+    const data = {
+        id_user: userId,
+        first_name: document.getElementById('first_name').value,
+        last_name: document.getElementById('last_name').value,
+        cellphone: document.getElementById('cellphone').value,
+        email: document.getElementById('email').value,
+        birth_date: document.getElementById('birth_date').value,
+        address: document.getElementById('address').value,
+        zip_code: document.getElementById('zip_code').value,
+        role: "user" // Assuming a default role for demonstration
+    };
+    const getUpdateUserUrl = `/v1/user/update`;
+
+    fetch(getUpdateUserUrl, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => { throw new Error(errorData.message); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Dados atualizados com sucesso!');
+        location.reload(); // Recarrega a página para desativar a edição e atualizar os dados
+    })
+    .catch(error => {
+        alert('Erro ao atualizar os dados do usuário.');
+        console.error('Error:', error);
+    });
+});
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+    </script>
+</body>
+</html>

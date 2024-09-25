@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    background-color: #f5f5f5;
+}
+
+nav.menu-lateral {
+    width: 250px;
+    height: 100%;
+    background-color: #0052cc;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transition: .5s;
+}
+
+nav.menu-lateral .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+nav.menu-lateral .logo {
+    width: 150px;
+}
+
+nav.menu-lateral ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+nav.menu-lateral ul li.item-menu {
+    transition: .2s;
+}
+
+nav.menu-lateral ul li.ativo {
+    background-color: #0033a0;
+}
+
+nav.menu-lateral ul li.item-menu:hover {
+    background: #004bb5;
+}
+
+nav.menu-lateral ul li.item-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+nav.menu-lateral ul li.item-menu a .icon {
+    margin-right: 15px;
+}
+
+nav.menu-lateral ul li.item-menu a .icon > i {
+    font-size: 20px;
+}
+
+.content {
+    flex: 1;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.inicialadmin h1 {
+    font-size: 2.3rem;
+    color: #242121;
+    margin-bottom: 20px;
+}
+
+.book-catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.book-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Alinha o conteúdo com espaço entre */
+    height: 100%; /* Garante que os itens internos ocupem toda a altura disponível */
+}
+
+.book-item img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.book-item h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.book-item p {
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.book-item .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.btn-redefinir-estoque, .btn-confirmar-redefinir, .btn-excluir-livro, .btn-atualizar-livro {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 200px;
+    font-size: 1.3rem;
+    width: 100%; /* Garante que os botões ocupem toda a largura disponível */
+}
+
+.btn-redefinir-estoque:hover, .btn-confirmar-redefinir:hover, .btn-excluir-livro:hover, .btn-atualizar-livro:hover {
+    background-color: #0056b3;
+}
+
+.campo-redefinir {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.campo-redefinir input {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-confirmar-redefinir {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 200px;
+    font-size: 1.3rem;
+}
+
+.btn-confirmar-redefinir:hover {
+    background-color: #28a745;
+}
+
+.estoque-info {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.btn-atualizar-livro {
+    background-color: #28a745;
+    color: #fff6f6;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.btn-excluir-livro {
+    background-color: #dc3545;
+    color: #fff;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.btn-excluir-livro:hover {
+    background-color: #c82333;
+}

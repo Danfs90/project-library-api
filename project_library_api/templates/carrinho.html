@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Carrinho</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+</head>
+<body>
+    <nav class="menu-lateral">
+        <div class="btn-expandir">
+            <i class="bi bi-list" id="btn-exp"></i>
+        </div><!--btn-expandir-->
+        <ul>
+            <li class="item-menu">
+                <a href="{{ url_for('inicial_user') }}">
+                    <span class="icon"><i class="bi bi-house-door"></i></span>
+                    <span class="txt-link">Início</span>
+                </a>
+            </li>
+            <li class="item-menu ativo">
+                <a href="{{ url_for('carrinho') }}">
+                    <span class="icon"><i class="bi bi-bag"></i></span>
+                    <span class="txt-link">Carrinho</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('meus_livros') }}">
+                    <span class="icon"><i class="bi bi-book"></i></span>
+                    <span class="txt-link">Meus livros</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('conta_user') }}">
+                    <span class="icon"><i class="bi bi-person-circle"></i></span>
+                    <span class="txt-link">Conta</span>
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{{ url_for('login') }}" id="logout-link" onclick="logout(event)">
+                    <span class="icon"><i class="bi bi-box-arrow-left"></i></span>
+                    <span class="txt-link">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="content">
+        <h1>Carrinho</h1>
+        <div class="items"></div>
+        <div id="cart-items"></div>
+    </div>
+
+    <div id="modalPagamento" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Pagamento</h2>
+            <p id="modalBookName"></p>
+            <p id="modalBookPrice"></p>
+            <form id="formPagamento">
+                <div class="form-group">
+                    <label for="nomeCartao">Nome no Cartão</label>
+                    <input type="text" id="nomeCartao" name="nomeCartao" required>
+                </div>
+                <div class="form-group">
+                    <label for="numeroCartao">Número do Cartão</label>
+                    <input type="text" id="numeroCartao" name="numeroCartao" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataExpiracao">Data de Expiração</label>
+                    <input type="text" id="dataExpiracao" name="dataExpiracao" placeholder="MM/AA" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" required>
+                </div>
+                <div class="form-group">
+                    <label for="enderecoEntrega">Endereço de Entrega</label>
+                    <input type="text" id="enderecoEntrega" name="enderecoEntrega" placeholder="Insira o Endereço" required>
+                </div>
+                <input type="hidden" id="user_id" name="id_user" value="">
+                <input type="hidden" id="book_id" name="id_book" value="">
+                <div class="form-group full-width">
+                    <button type="button" class="btn cancelar" id="cancelarCompra">Cancelar</button>
+                    <button type="submit" class="btn aceitar" id="aceitarCompra">Aceitar Compra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        // Função para abrir o modal
+        function abrirModal(nomeLivro, precoLivro, book_id) {
+            document.getElementById('modalBookName').innerText = 'Nome do Livro: ' + nomeLivro;
+            document.getElementById('modalBookPrice').innerText = 'Preço: ' + precoLivro;
+            document.getElementById('book_id').value = book_id; 
+            document.getElementById('modalPagamento').style.display = 'block';
+
+            const id_user = getCookie('user_id'); // Substitua 'id_user' pelo nome correto do cookie
+
+            if (id_user) {
+                document.getElementById('user_id').value = id_user; // Define o id_user no campo oculto
+            } else {
+                // Trate o caso em que o id_user não está presente
+                console.error('ID do usuário não encontrado no cookie.');
+            }            
+        }
+
+        // Função para fechar o modal
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('modalPagamento').style.display = 'none';
+        }
+
+        document.getElementById('cancelarCompra').onclick = function() {
+            document.getElementById('modalPagamento').style.display = 'none';
+        }
+
+        // Função para adicionar ao carrinho (simples)
+        function adicionarAoCarrinho(nomeLivro, precoLivro, idLivro) {
+            alert(nomeLivro + ' foi adicionado ao carrinho!');
+            // Implementar lógica de adicionar ao carrinho
+        }
+
+        document.getElementById('aceitarCompra').addEventListener('click', function(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+            
+            // Obtenha os dados do formulário
+            const formData = new FormData(document.getElementById('formPagamento'));
+
+            // Crie um objeto JavaScript com os dados do FormData
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                formDataObj[key] = value;
+            });
+
+            // Defina o cabeçalho Content-Type para indicar que está enviando JSON
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            // URL da API
+            const url = 'http://127.0.0.1:5000/v1/my_books/payment';
+
+            // Configuração da requisição
+            fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(formDataObj) // Envie os dados como JSON
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar dados');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resposta da API:', data);
+                alert('Compra efetuada com sucesso!');
+
+                // Limpar o formulário após a compra
+                document.getElementById('formPagamento').reset();
+
+                // Fechar o modal após a compra
+                document.getElementById('modalPagamento').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Erro ao enviar dados:', error);
+                alert('Erro ao realizar pagamento. Por favor, tente novamente.');
+            });
+        });
+
+    </script>
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+</body>
+</html>
