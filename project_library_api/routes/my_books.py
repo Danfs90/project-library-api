@@ -21,7 +21,9 @@ def my_books(id_user):
             return api_response(400, message="Parametros obrigatorios não enviados na requisição")
         
 
-        id_books = db.session.query(UsersBooks).filter(UsersBooks.id_user == int(id_user)).all()
+        id_books = db.session.query(UsersBooks).filter(
+                UsersBooks.id_user == int(id_user)
+            ).with_entities(UsersBooks.id_user, UsersBooks.id_book).all()
 
         if not id_books:
             LOGGER.info('Não localizados livros para o usuario: {}'.format(id_user))
